@@ -6,6 +6,7 @@
   } from "$lib/fimo-colours.js";
   import { mixRecipe } from "$lib/colourMixer.js";
   import html2canvas from "html2canvas-pro";
+  import { fade } from "svelte/transition";
 
   /** @type {HTMLElement | undefined} */
   let recipeEl = $state();
@@ -290,7 +291,7 @@
       class="lg:w-1/3 p-6 space-y-6 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto"
     >
       {#if selected_swatch}
-        <div bind:this={recipeEl} class="space-y-6">
+        <div bind:this={recipeEl} in:fade={{ duration: 150 }} class="space-y-6">
           <!-- Colour Preview -->
           <div
             class="w-full h-24 rounded-xl border border-gray-200 flex items-end p-3"
@@ -408,6 +409,7 @@
 
         <!-- Download Button (excluded from image capture) -->
         <button
+          in:fade={{ duration: 150 }}
           data-html2canvas-ignore="true"
           onclick={downloadRecipe}
           class="w-full py-2 px-4 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"

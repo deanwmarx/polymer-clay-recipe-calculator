@@ -1,38 +1,49 @@
-# sv
+# FIMO Clay Colour Recipe Generator
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A tool that converts the FIMO True Colours mixing leporello into an interactive, human-readable colour recipe generator. Select a target colour, set your total payload weight in grams, and get a precise mixing ratio you can download as an image.
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Select any colour from the FIMO True Colours system
+- Input desired total payload (grams)
+- Auto-calculates raw colour ratios based on FIMO's mixing system
+- Export recipe as a downloadable image
 
-```sh
-# create a new project in the current directory
-npx sv create
+## Stack
 
-# create a new project in my-app
-npx sv create my-app
+- **Svelte** – UI framework
+- **Tailwind CSS** – styling
+- **html2canvas-pro** – recipe image export
+
+## Getting started
+
+```bash
+npm install
 ```
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
+```bash
 npm run dev
 
-# or start the server and open the app in a new browser tab
+# or open in browser automatically
 npm run dev -- --open
 ```
 
 ## Building
 
-To create a production version of your app:
-
-```sh
+```bash
 npm run build
 ```
 
-You can preview the production build with `npm run preview`.
+Preview the production build:
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```bash
+npm run preview
+```
+
+> You may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target deployment environment.
+
+## Reference
+
+Mixing ratios based on the [FIMO True Colours](https://e.staedtlercdn.com/fileadmin/user_upload/Content/Ratgeber/R25-The-FIMO-professional-colour-mixing-system/FIMO-True-Colours-Leporello.pdf?1741873957&_gl=1*1e0bgxx*_ga*MTAyNjM5Nzk2LjE3ODgxOTgwMTk.*_ga_071N0LCBP5*czE3ODgxOTgwMTkkbzEkZzAkdDE3ODgxOTgwMjAkajU5JGwwJGg5NjE3OTg2MjI.*_ga_YEC3WBN8EG*czE3ODgxOTgwMTkkbzEkZzAkdDE3ODgxOTgwMjAkajU5JGwwJGg3MDk3ODQyMDY.*_gcl_au*MTIzMDA1NzE0My4xNzg4MTk4MDIw) colour mixing system (Leporello).

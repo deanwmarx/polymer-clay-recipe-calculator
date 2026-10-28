@@ -22,7 +22,22 @@
   function finishClose() {
     if (!open) { dialog?.close(); offset = 0; modalOpen = false; }
   }
-  function nativeClose() { close(); offset = 0; modalOpen = false; }
+  function nativeClose() {
+    // A queued close event can arrive after the next recipe has already opened.
+    if (dialog?.open) return;
+    close(); offset = 0; modalOpen = false;
+  }
+  /** @param {HTMLElement} node */
+  function exitSheet(node) {
+    const height = node.getBoundingClientRect().height;
+    const remaining = Math.max(0, height - offset);
+    return fly(node, {
+      y: remaining,
+      duration: motion.current || !height ? 0 : 280 * remaining / height,
+      opacity: 1,
+      easing: cubicOut
+    });
+  }
   /** @param {Event} event */
   function cancel(event) { event.preventDefault(); close(); }
   /** @param {MouseEvent} event */
@@ -49,6 +64,8 @@
     if (event.pointerId !== pointer) return;
     const distance = Math.max(0, event.clientY - startY);
     const speed = distance / Math.max(1, performance.now() - startTime);
+    const handle = /** @type {HTMLElement} */ (event.currentTarget);
+    if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId);
     pointer = -1;
     dragging = false;
     if (distance >= 96 || (distance >= 32 && speed > 0.65)) close();
@@ -57,6 +74,7 @@
   function cancelDrag() { pointer = -1; dragging = false; offset = 0; }
   /** @param {MouseEvent} event */
   function handleClick(event) {
+    if (suppressClick) { event.preventDefault(); event.stopPropagation(); }
     if (event.detail === 0 || !suppressClick) close();
     suppressClick = false;
   }
@@ -76,7 +94,7 @@
   class="fixed inset-x-0 top-auto bottom-0 mx-auto my-0 max-h-none w-full max-w-2xl translate-y-(--sheet-offset) overflow-visible border-0 bg-transparent p-0 transition-transform duration-180 ease-out data-[dragging=true]:transition-none motion-reduce:transition-none backdrop:bg-scrim backdrop:opacity-100 backdrop:transition-opacity backdrop:duration-280 data-[closing=true]:backdrop:opacity-0 motion-reduce:backdrop:transition-none">
   {#if open}
     <div class="flex max-h-[88dvh] flex-col overflow-hidden rounded-t-panel bg-surface-canvas text-ink shadow-panel"
-      transition:fly={{y:'100%',duration:motion.current ? 0 : 280,opacity:1,easing:cubicOut}} onoutroend={finishClose}>
+      in:fly={{y:'100%',duration:motion.current ? 0 : 280,opacity:1,easing:cubicOut}} out:exitSheet onoutroend={finishClose}>
       <div class="shrink-0 border-b border-line bg-surface px-4">
         <Button variant="ghost" size="bare" display="block" aria-label="Close colour recipe" title="Drag down or tap to close"
           onclick={handleClick} onpointerdown={startDrag} onpointermove={moveDrag} onpointerup={endDrag} onpointercancel={cancelDrag}

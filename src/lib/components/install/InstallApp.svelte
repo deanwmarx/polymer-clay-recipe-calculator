@@ -1,12 +1,12 @@
 <script>
   import { onMount } from 'svelte';
   import InstallInstructions from './InstallInstructions.svelte';
-  import clayIcon from '$lib/assets/favicon.svg';
+  import clayIcon from '#lib/assets/favicon.svg';
   import Button from '../ui/Button.svelte';
   import Icon from '../ui/Icon.svelte';
   import Modal from '../ui/Modal.svelte';
   import { fly } from 'svelte/transition';
-  import { mediaQuery } from '$lib/media.svelte.js';
+  import { mediaQuery } from '#lib/media.svelte.js';
   const motion = mediaQuery('(prefers-reduced-motion: reduce)');
   const descriptionId = $props.id();
 

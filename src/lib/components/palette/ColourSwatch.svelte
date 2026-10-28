@@ -1,6 +1,6 @@
 <script>
-  import { contrastColour } from '$lib/colourDisplay.js';
-  /** @type {{swatch: import('$lib/fimo-colours.js').Swatch, selected?: boolean, mode?: 'named' | 'compact', onselect: (swatch: import('$lib/fimo-colours.js').Swatch) => void}} */
+  import { contrastColour } from '#lib/colourDisplay.js';
+  /** @type {{swatch: import('#lib/fimo-colours.js').Swatch, selected?: boolean, mode?: 'named' | 'compact', onselect: (swatch: import('#lib/fimo-colours.js').Swatch) => void}} */
   let { swatch, selected = false, mode = 'named', onselect } = $props();
 </script>
 

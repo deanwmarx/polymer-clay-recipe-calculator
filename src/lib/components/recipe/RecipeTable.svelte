@@ -1,5 +1,5 @@
 <script>
-  /** @type {{result: import('$lib/colourMixer.js').MixResult}} */
+  /** @type {{result: import('#lib/colourMixer.js').MixResult}} */
   let { result } = $props();
 </script>
 

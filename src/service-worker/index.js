@@ -1,12 +1,17 @@
-/// <reference lib="webworker" />
-import { base, build, files, prerendered, version } from '$service-worker';
+import { version } from '$app/env';
+import { assets, immutable, prerendered } from '$app/manifest';
+import { resolve } from '$app/paths';
 
 const worker = /** @type {ServiceWorkerGlobalScope} */ (/** @type {unknown} */ (self));
 // Keep cache ownership scoped to this app on the shared GitHub Pages origin.
-const CACHE_PREFIX = `clay-colour:${base}:`;
+const HOME = resolve('/');
+const CACHE_PREFIX = `clay-colour:${HOME.replace(/\/$/, '')}:`;
 const CACHE = `${CACHE_PREFIX}${version}`;
-const HOME = `${base}/`;
-const ASSETS = new Set([...build, ...files, ...prerendered, HOME]);
+const ASSETS = new Set([
+  ...[...immutable, ...assets, ...prerendered].map(({ path }) =>
+    new URL(path, worker.registration.scope).pathname),
+  HOME
+]);
 
 worker.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll([...ASSETS])));

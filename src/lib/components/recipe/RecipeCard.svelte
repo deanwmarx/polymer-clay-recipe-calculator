@@ -1,9 +1,9 @@
 <script>
-  import { mixRecipe } from '$lib/colourMixer.js';
-  import { contrastColour } from '$lib/colourDisplay.js';
+  import { mixRecipe } from '#lib/colourMixer.js';
+  import { contrastColour } from '#lib/colourDisplay.js';
   import RecipeTable from './RecipeTable.svelte';
   import PreparationSteps from './PreparationSteps.svelte';
-  /** @type {{swatch: import('$lib/fimo-colours.js').Swatch, grams?: number, element?: HTMLDivElement}} */
+  /** @type {{swatch: import('#lib/fimo-colours.js').Swatch, grams?: number, element?: HTMLDivElement}} */
   let { swatch, grams = $bindable(10), element = $bindable() } = $props();
   const inputId = $props.id();
   const result = $derived(mixRecipe(swatch.recipe, grams));

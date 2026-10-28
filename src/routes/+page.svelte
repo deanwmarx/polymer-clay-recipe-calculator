@@ -1,14 +1,14 @@
 <script>
-  import { mediaQuery } from '$lib/media.svelte.js';
-  import AppHeader from '$lib/components/layout/AppHeader.svelte';
-  import AppFooter from '$lib/components/layout/AppFooter.svelte';
-  import ColourPalette from '$lib/components/palette/ColourPalette.svelte';
-  import RecipePanel from '$lib/components/recipe/RecipePanel.svelte';
-  import RecipeLauncher from '$lib/components/recipe/RecipeLauncher.svelte';
-  import EmptyRecipe from '$lib/components/recipe/EmptyRecipe.svelte';
-  import BottomSheet from '$lib/components/ui/BottomSheet.svelte';
+  import { mediaQuery } from '#lib/media.svelte.js';
+  import AppHeader from '#lib/components/layout/AppHeader.svelte';
+  import AppFooter from '#lib/components/layout/AppFooter.svelte';
+  import ColourPalette from '#lib/components/palette/ColourPalette.svelte';
+  import RecipePanel from '#lib/components/recipe/RecipePanel.svelte';
+  import RecipeLauncher from '#lib/components/recipe/RecipeLauncher.svelte';
+  import EmptyRecipe from '#lib/components/recipe/EmptyRecipe.svelte';
+  import BottomSheet from '#lib/components/ui/BottomSheet.svelte';
 
-  /** @type {import('$lib/fimo-colours.js').Swatch | null} */
+  /** @type {import('#lib/fimo-colours.js').Swatch | null} */
   let selected = $state(null);
   let grams = $state(10);
   let sheetOpen = $state(false);
@@ -16,7 +16,7 @@
   const mobile = mediaQuery('(max-width: 1023px)');
   $effect(() => { if (!mobile.current) sheetOpen = false; });
 
-  /** @param {import('$lib/fimo-colours.js').Swatch} swatch */
+  /** @param {import('#lib/fimo-colours.js').Swatch} swatch */
   function selectSwatch(swatch) {
     selected = !mobile.current && selected?.id === swatch.id ? null : swatch;
     if (mobile.current) sheetOpen = true;

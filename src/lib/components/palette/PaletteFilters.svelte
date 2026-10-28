@@ -1,5 +1,5 @@
 <script>
-  import { COLOUR_GROUPS } from '$lib/fimo-colours.js';
+  import { COLOUR_GROUPS } from '#lib/fimo-colours.js';
   import Button from '../ui/Button.svelte';
   import Icon from '../ui/Icon.svelte';
   import Disclosure from '../ui/Disclosure.svelte';

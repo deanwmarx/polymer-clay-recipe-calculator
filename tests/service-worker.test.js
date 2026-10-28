@@ -6,8 +6,8 @@ import vm from 'node:vm';
 
 const base = '/polymer-clay-recipe-calculator';
 const home = `${base}/`;
-const script = readFileSync(new URL('../src/service-worker.js', import.meta.url), 'utf8')
-  .replace(/^import .* from '\$service-worker';$/m, '');
+const script = readFileSync(new URL('../src/service-worker/index.js', import.meta.url), 'utf8')
+  .replace(/^import .* from '\$app\/(?:env|manifest|paths)';$/gm, '');
 
 function harness(network = async () => new Response('online')) {
   const listeners = {};
@@ -28,13 +28,14 @@ function harness(network = async () => new Response('online')) {
   };
   const self = {
     location: { origin: 'https://deanwmarx.github.io' },
+    registration: { scope: `https://deanwmarx.github.io${home}` },
     clients: { async claim() { claimed = true; } },
     addEventListener(name, callback) { listeners[name] = callback; },
   };
   vm.runInNewContext(script, {
-    self, caches, URL, Response, fetch: network, base,
-    build: [`${base}/_app/app.js`], files: [`${base}/icons/clay-recipes-192.png`],
-    prerendered: [home], version: 'new',
+    self, caches, URL, Response, fetch: network, resolve: () => home,
+    immutable: [{path:'_app/app.js'}], assets: [{path:'icons/clay-recipes-192.png'}],
+    prerendered: [{path:''}], version: 'new',
   });
   return {
     storage, removed, get claimed() { return claimed; },

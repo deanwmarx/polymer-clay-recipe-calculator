@@ -11,14 +11,18 @@ A tool that converts the FIMO True Colours mixing leporello into an interactive,
 
 ## Stack
 
-- **Svelte** – UI framework
+- **Svelte 5 / SvelteKit 3** – UI framework and static rendering
+- **Vite 8** – development server and production builds
+- **TypeScript 6** – JavaScript and Svelte checks (the supported major for SvelteKit 3.1 and svelte-check)
 - **Tailwind CSS** – styling
 - **html2canvas-pro** – recipe image export
 
 ## Getting started
 
+Use Node.js 24 (also specified in `.nvmrc` and used by CI).
+
 ```bash
-npm install
+npm ci
 ```
 
 ## Developing
@@ -42,7 +46,7 @@ Preview the production build:
 npm run preview
 ```
 
-> You may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target deployment environment.
+The static adapter is configured in `vite.config.js`. Shared library imports use the `#lib` subpath mapping in `package.json`. `npm run check` checks both the app and the separate service-worker TypeScript project.
 
 ## Reference
 
@@ -59,19 +63,19 @@ Appearance defaults to **System** and follows device changes while the app is op
 
 Palette swatch hex colours are independent of the interface theme and remain identical in both modes. Recipe image exports use the current theme.
 
-## Planned GitHub Pages URL
+## GitHub Pages deployment
 
 The production build targets `https://deanwmarx.github.io/polymer-clay-recipe-calculator/`. Local development continues at `/`; `npm run preview` serves the built app at `/polymer-clay-recipe-calculator/`.
 
-To serve it as part of the existing personal site, put the contents of `build/` inside that site's `polymer-clay-recipe-calculator/` directory. Preserve the `_app/` assets when publishing. If that site uses a Jekyll build, its root needs `.nojekyll` or an equivalent configuration that retains those assets.
+The repository must be named `polymer-clay-recipe-calculator`, with **Settings → Pages → Source** set to **GitHub Actions**. `.github/workflows/deploy.yml` checks, tests, builds and deploys the `build/` directory on pushes to `main`, or when run manually. This project site deploys independently of the portfolio repository.
 
-The page is prerendered with its content and SEO metadata. Its canonical URL, Open Graph URL, structured data, and sitemap use the planned URL with a trailing slash. The sitemap is available at `/polymer-clay-recipe-calculator/sitemap.xml`. Add that sitemap URL to the personal site's **root** `robots.txt`, or submit it directly to your search console; a `robots.txt` inside this subdirectory does not control crawling for the domain.
+The page is prerendered with its content and SEO metadata. Its canonical URL, Open Graph URL, structured data, and sitemap use the public URL with a trailing slash. The sitemap is available at `/polymer-clay-recipe-calculator/sitemap.xml`. Add that sitemap URL to the personal site's **root** `robots.txt`, or submit it directly to your search console; a `robots.txt` inside this subdirectory does not control crawling for the domain.
 
 ## Installable app and offline use
 
 `static/manifest.webmanifest` defines the app name, standalone display, launch scope and install icons. All manifest URLs are relative to its directory, so installation stays within the calculator's GitHub Pages subdirectory. The PNG icons reuse the clay logo, with a separate maskable icon and Apple touch icon.
 
-SvelteKit automatically registers `src/service-worker.js` in production. It precaches the calculator and its assets for offline use after the initial successful online visit. Navigations try the network first and fall back to the cached calculator offline. Cache cleanup only removes this app's old versioned caches, preserving other apps on the same origin. Updates activate after windows using the previous version close.
+SvelteKit automatically registers `src/service-worker/index.js` in production. It precaches the calculator and its assets for offline use after the initial successful online visit. Navigations try the network first and fall back to the cached calculator offline. Cache cleanup only removes this app's old versioned caches, preserving other apps on the same origin. Updates activate after windows using the previous version close.
 
 Use `npm run build` and `npm run preview` to check the production PWA at the configured subpath. Service workers are not installed by the development server. The deployed app should use HTTPS; localhost also supports service-worker testing. Installation is available through the browser's install or Add to Home Screen controls.
 
@@ -79,7 +83,7 @@ Run `node --test tests/colourMixer.test.js tests/service-worker.test.js` to chec
 
 The mobile footer's **Save app to your phone** action uses the browser's `beforeinstallprompt` event when available. Otherwise, it opens device-specific installation instructions (Safari Share → Add to Home Screen on iOS; the install/home-screen browser menu on Android). The action is hidden on desktop, when running in standalone mode, or after an accepted install. The guide uses a native modal dialog with Escape/Close support and focus return.
 
-On mobile, a small non-modal install suggestion appears once after five seconds of visible browsing (the current testing delay; `HINT_DELAY_MS` in `src/lib/components/install/InstallApp.svelte` should become `60_000` for release). It waits while filters or a recipe sheet are open and is suppressed for installed apps. Showing it records `clay-colour-install-hint-seen` in local storage, so it does not reappear after reload or on later visits. The suggestion offers Save app and Dismiss forever, and explains that the mobile footer installation link remains available. No install suggestion appears on desktop.
+On mobile, a small non-modal install suggestion appears once after one minute of visible browsing (`HINT_DELAY_MS` in `src/lib/components/install/InstallApp.svelte`). It waits while filters or a recipe sheet are open and is suppressed for installed apps. Showing it records `clay-colour-install-hint-seen` in local storage, so it does not reappear after reload or on later visits. The suggestion offers Save app and Dismiss forever, and explains that the mobile footer installation link remains available. No install suggestion appears on desktop.
 
 ## Component structure
 

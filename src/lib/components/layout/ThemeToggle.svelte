@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { mediaQuery } from '$lib/media.svelte.js';
+  import { mediaQuery } from '#lib/media.svelte.js';
   import Button from '../ui/Button.svelte';
   import Icon from '../ui/Icon.svelte';
 

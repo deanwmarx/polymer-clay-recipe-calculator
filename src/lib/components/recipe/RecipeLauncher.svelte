@@ -1,7 +1,7 @@
 <script>
   import Button from '../ui/Button.svelte';
   import Icon from '../ui/Icon.svelte';
-  /** @type {{swatch: import('$lib/fimo-colours.js').Swatch, onclick: () => void}} */
+  /** @type {{swatch: import('#lib/fimo-colours.js').Swatch, onclick: () => void}} */
   let { swatch, onclick } = $props();
 </script>
 <div class="sticky bottom-0 z-10 border-t border-line bg-surface/95 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-sm lg:hidden">

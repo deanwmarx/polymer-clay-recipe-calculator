@@ -1,9 +1,9 @@
 <script>
-  import { exportRecipe } from '$lib/exportRecipe.js';
+  import { exportRecipe } from '#lib/exportRecipe.js';
   import RecipeCard from './RecipeCard.svelte';
   import Button from '../ui/Button.svelte';
   import Icon from '../ui/Icon.svelte';
-  /** @type {{swatch: import('$lib/fimo-colours.js').Swatch, grams?: number}} */
+  /** @type {{swatch: import('#lib/fimo-colours.js').Swatch, grams?: number}} */
   let { swatch, grams = $bindable(10) } = $props();
   /** @type {HTMLDivElement | undefined} */
   let card = $state();

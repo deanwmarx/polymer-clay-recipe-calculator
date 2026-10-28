@@ -1,9 +1,9 @@
 <script>
-  import { COLOUR_ROWS, NEUTRAL_SWATCHES } from '$lib/fimo-colours.js';
+  import { COLOUR_ROWS, NEUTRAL_SWATCHES } from '#lib/fimo-colours.js';
   import PaletteFilters from './PaletteFilters.svelte';
   import ColourSwatch from './ColourSwatch.svelte';
   import Button from '../ui/Button.svelte';
-  /** @type {{selected: import('$lib/fimo-colours.js').Swatch | null, filtersOpen?: boolean, onselect: (swatch: import('$lib/fimo-colours.js').Swatch) => void}} */
+  /** @type {{selected: import('#lib/fimo-colours.js').Swatch | null, filtersOpen?: boolean, onselect: (swatch: import('#lib/fimo-colours.js').Swatch) => void}} */
   let { selected, filtersOpen = $bindable(false), onselect } = $props();
   let all = $state(true);
   /** @type {string[]} */

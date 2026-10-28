@@ -2,7 +2,7 @@
   import { slide } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import { tick } from 'svelte';
-  import { mediaQuery } from '$lib/media.svelte.js';
+  import { mediaQuery } from '#lib/media.svelte.js';
   import Button from './Button.svelte';
   import Icon from './Icon.svelte';
 

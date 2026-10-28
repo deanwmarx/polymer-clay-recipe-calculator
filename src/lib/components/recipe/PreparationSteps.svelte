@@ -1,5 +1,5 @@
 <script>
-  import { preparationSegments } from '$lib/colourMixer.js';
+  import { preparationSegments } from '#lib/colourMixer.js';
   /** @type {{steps: string[]}} */
   let { steps } = $props();
 </script>

@@ -1,5 +1,5 @@
 <script>
-  import clayIcon from '$lib/assets/favicon.svg';
+  import clayIcon from '#lib/assets/favicon.svg';
   import ThemeToggle from './ThemeToggle.svelte';
   import Disclosure from '../ui/Disclosure.svelte';
 </script>

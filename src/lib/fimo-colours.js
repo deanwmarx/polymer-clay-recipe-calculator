@@ -1,3 +1,5 @@
+import { VISUAL_COLOUR_NAMES } from "./colourNames.js";
+
 /**
  * FIMO True Colours — Swatch Definitions
  *
@@ -12,6 +14,7 @@
  */
 
 // ─── Primary clay colours ─────────────────────────────────────────────────────
+/** @type {Record<string, string>} */
 export const PRIMARY_HEX = {
   W: "#ffffff",
   K: "#1a1a1a",
@@ -25,6 +28,7 @@ export const PRIMARY_HEX = {
 // ─── Per-swatch hex overrides ─────────────────────────────────────────────────
 // All values are pre-populated with derived approximations.
 // Replace any value with an eyedropper-sampled hex when ready.
+/** @type {Record<string, string>} */
 export const SWATCH_HEX_OVERRIDES = {
   // ── Neutrals ─────────────────────────────────────────────────
   W: "#ffffff",
@@ -228,6 +232,7 @@ export const SWATCH_HEX_OVERRIDES = {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+/** @param {string} hex */
 function hexToRgb(hex) {
   const h = hex.replace("#", "");
   return {
@@ -237,6 +242,7 @@ function hexToRgb(hex) {
   };
 }
 
+/** @param {number} r @param {number} g @param {number} b */
 function rgbToHex(r, g, b) {
   return (
     "#" +
@@ -277,6 +283,7 @@ function deriveHex(recipe) {
 }
 
 // ─── Intermediate wheel colour ratios (from Leporello) ────────────────────────
+/** @type {Record<string, {clay: string, parts: number}[]>} */
 export const WHEEL_RECIPES = {
   Y: [{ clay: "Y", parts: 1 }],
   YI: [
@@ -366,16 +373,35 @@ export const WHEEL_RECIPES = {
 /**
  * @typedef {Object} Swatch
  * @property {string} id
- * @property {string} name
+ * @property {string} name - Visual description of the screen swatch
+ * @property {string} fimoName - Original recipe-based label used by this tool
+ * @property {string} fimoReference - FIMO wheel code and unexpanded recipe
  * @property {string} family
  * @property {string} hex
  * @property {{ clay: string, parts: number }[]} recipe
  */
 
-/** @returns {Swatch} */
+/**
+ * @param {string} id
+ * @param {string} name
+ * @param {string} family
+ * @param {{ clay: string, parts: number }[]} recipe
+ * @returns {Swatch}
+ */
 function makeSwatch(id, name, family, recipe) {
   const hex = SWATCH_HEX_OVERRIDES[id] ?? deriveHex(recipe);
-  return { id, name, family, hex, recipe };
+  const wheelKey = id.split("_")[0];
+  const ratio = recipe.map(({ clay, parts }) => `${parts} ${clay}`).join(" + ");
+  const fimoReference = family === "Neutrals" ? ratio : `${wheelKey} · ${ratio}`;
+  return {
+    id,
+    name: VISUAL_COLOUR_NAMES[id] ?? name,
+    fimoName: name,
+    fimoReference,
+    family,
+    hex,
+    recipe,
+  };
 }
 
 // ─── Neutral swatches ─────────────────────────────────────────────────────────
@@ -405,6 +431,7 @@ const neutrals = [
 ];
 
 // ─── Main wheel swatches (pure) ───────────────────────────────────────────────
+/** @type {Record<string, string>} */
 export const WHEEL_NAMES = {
   Y: "True Yellow",
   YI: "Yellow-Orange I",
@@ -432,6 +459,7 @@ export const WHEEL_NAMES = {
   GV: "Green-Yellow V",
 };
 
+/** @type {Record<string, string>} */
 const WHEEL_FAMILIES = {
   Y: "Yellow",
   YI: "Yellow",

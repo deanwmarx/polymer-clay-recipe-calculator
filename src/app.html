@@ -3,6 +3,46 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Polymer Clay Recipe Calculator</title>
+		<meta name="description" content="Mix 175 polymer clay colours with FIMO Professional. Choose a colour and batch weight to get precise mixing recipes in grams and step-by-step instructions." />
+		<meta name="author" content="Dean Marx" />
+		<meta name="robots" content="index, follow" />
+		<link rel="canonical" href="https://deanwmarx.github.io/polymer-clay-recipe-calculator/" />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Polymer Clay Recipe Calculator" />
+		<meta property="og:url" content="https://deanwmarx.github.io/polymer-clay-recipe-calculator/" />
+		<meta property="og:locale" content="en_GB" />
+		<meta property="og:title" content="Polymer Clay Recipe Calculator" />
+		<meta property="og:description" content="Choose from 175 polymer clay colours and get FIMO Professional mixing recipes calculated for your batch weight, with clear preparation steps." />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content="Polymer Clay Recipe Calculator" />
+		<meta name="twitter:description" content="Choose from 175 polymer clay colours and get FIMO Professional mixing recipes calculated for your batch weight, with clear preparation steps." />
+		<script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Polymer Clay Recipe Calculator",
+        "url": "https://deanwmarx.github.io/polymer-clay-recipe-calculator/",
+        "description": "A polymer clay colour mixing calculator using FIMO Professional True Colours recipes, with ingredient weights and step-by-step preparation instructions.",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Any",
+        "inLanguage": "en",
+        "author": {
+          "@type": "Person",
+          "name": "Dean Marx",
+          "url": "https://deanwmarx.github.io"
+        }
+      }
+    </script>
+		<script>
+      // Apply the saved appearance before first paint; default to the device theme.
+      (() => {
+        let preference = 'system';
+        try { preference = localStorage.getItem('clay-colour-theme') || 'system'; } catch {}
+        const dark = preference === 'dark' || (preference !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      })();
+    </script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

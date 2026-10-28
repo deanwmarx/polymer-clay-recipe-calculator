@@ -1,1 +1,97 @@
 @import 'tailwindcss';
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* Reference tokens: the bright polymer-clay palette. */
+@theme {
+  --color-clay-violet: #7534df;
+  --color-clay-pink: #f04497;
+  --color-clay-cyan: #15bde0;
+  --color-clay-yellow: #ffda36;
+  --color-clay-lime: #8ed750;
+  --color-clay-red: #f15368;
+  --color-clay-blue: #438cf5;
+  --radius-control: 0.875rem;
+  --radius-panel: 1.5rem;
+  --font-sans: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  --text-caption: 0.625rem;
+  --color-clay-pink-soft: #f9a8d4;
+  --color-clay-pink-deep: #92164e;
+}
+
+/* Semantic tokens: components depend on roles, rather than colour values. */
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+  --surface-canvas: #f5f2fb;
+  --surface-base: #ffffff;
+  --surface-subtle: #f3effa;
+  --surface-raised: #ffffff;
+  --content-primary: #29213c;
+  --content-secondary: #514663;
+  --content-muted: #736580;
+  --border-default: #e1d8ed;
+  --border-strong: #bfb0d2;
+  --action-primary: #7534df;
+  --action-hover: #6125c2;
+  --action-soft: #eee4ff;
+  --action-content: #ffffff;
+  --action-text: #6525be;
+  --focus-ring: #a72bc2;
+  --overlay-scrim: rgb(28 15 49 / 45%);
+  --elevation-panel: 0 16px 60px rgb(57 30 87 / 15%);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --surface-canvas: #171321;
+  --surface-base: #211b2e;
+  --surface-subtle: #2b233a;
+  --surface-raised: #352b46;
+  --content-primary: #f6f0ff;
+  --content-secondary: #dbcee9;
+  --content-muted: #b4a3c8;
+  --border-default: #433550;
+  --border-strong: #776089;
+  --action-primary: #bb98ff;
+  --action-hover: #cdb4ff;
+  --action-soft: #3e2a59;
+  --action-content: #291044;
+  --action-text: #d4baff;
+  --focus-ring: #ff83c3;
+  --overlay-scrim: rgb(9 5 17 / 72%);
+  --elevation-panel: 0 16px 60px rgb(0 0 0 / 35%);
+}
+
+@theme inline {
+  --color-surface-canvas: var(--surface-canvas);
+  --color-surface: var(--surface-base);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-raised: var(--surface-raised);
+  --color-ink: var(--content-primary);
+  --color-body: var(--content-secondary);
+  --color-muted: var(--content-muted);
+  --color-line: var(--border-default);
+  --color-line-strong: var(--border-strong);
+  --color-accent: var(--action-primary);
+  --color-accent-hover: var(--action-hover);
+  --color-accent-soft: var(--action-soft);
+  --color-on-accent: var(--action-content);
+  --color-accent-text: var(--action-text);
+  --color-focus: var(--focus-ring);
+  --shadow-panel: var(--elevation-panel);
+  --shadow-divider: 0 1px 0 var(--border-default);
+  --color-family: var(--family-colour, var(--action-primary));
+  --color-family-soft: color-mix(in srgb, var(--family-colour, var(--action-primary)) 16%, var(--surface-base));
+  --color-scrim: var(--overlay-scrim);
+  --background-image-brand-ribbon: linear-gradient(90deg, var(--color-clay-violet), var(--color-clay-pink) 35%, var(--color-clay-yellow) 65%, var(--color-clay-cyan));
+}
+
+@layer base {
+  body { background: var(--surface-canvas); color: var(--content-primary); }
+  :where(button, a, input):focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+  button { -webkit-tap-highlight-color: transparent; }
+  ::selection { background: var(--action-primary); color: var(--action-content); }
+}

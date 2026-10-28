@@ -1,4 +1,5 @@
 import { WHEEL_NAMES, WHEEL_RECIPES } from "./fimo-colours.js";
+import { VISUAL_COLOUR_NAMES } from "./colourNames.js";
 
 /**
  * @typedef {{ clay: string, parts: number }[]} Recipe
@@ -16,6 +17,7 @@ import { WHEEL_NAMES, WHEEL_RECIPES } from "./fimo-colours.js";
  * @property {number} totalGrams
  */
 
+/** @type {Record<string, string>} */
 const PRIMARY_CLAY_NAMES = {
   W: "White",
   K: "Black",
@@ -25,6 +27,25 @@ const PRIMARY_CLAY_NAMES = {
   B: "True Blue",
   G: "True Green",
 };
+
+// Longest names first so "True Magenta" stays together rather than matching
+// just "Magenta". Return text segments so the UI can use semantic <strong>.
+const ingredientNames = [...new Set([
+  ...Object.values(PRIMARY_CLAY_NAMES),
+  ...Object.values(VISUAL_COLOUR_NAMES),
+])].sort((a, b) => b.length - a.length);
+const ingredientNamePattern = new RegExp(
+  `\\b(${ingredientNames.map((name) => name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\b`,
+  "g",
+);
+
+/** @param {string} step */
+export function preparationSegments(step) {
+  return step.split(ingredientNamePattern).map((text, index) => ({
+    text,
+    ingredient: index % 2 === 1,
+  }));
+}
 
 /**
  * Check if a clay key is a compound wheel colour (not a primary).
@@ -45,9 +66,13 @@ function expandRecipe(recipe) {
   const result = {};
   for (const { clay, parts } of recipe) {
     if (isCompoundKey(clay)) {
-      // Expand compound key into primaries, scaled by parts
-      for (const { clay: subClay, parts: subParts } of WHEEL_RECIPES[clay]) {
-        result[subClay] = (result[subClay] ?? 0) + subParts * parts;
+      // One part means one part of the finished wheel mixture, not its
+      // entire raw ratio (e.g. one part RI contains 3/5 R and 2/5 M).
+      /** @type {Recipe} */
+      const wheelRecipe = WHEEL_RECIPES[clay];
+      const wheelTotal = wheelRecipe.reduce((sum, entry) => sum + entry.parts, 0);
+      for (const { clay: subClay, parts: subParts } of wheelRecipe) {
+        result[subClay] = (result[subClay] ?? 0) + (subParts / wheelTotal) * parts;
       }
     } else {
       result[clay] = (result[clay] ?? 0) + parts;
@@ -144,7 +169,7 @@ function buildSteps(lines, originalRecipe) {
   if (compoundEntry) {
     // Two-step process: first mix the wheel colour, then add W/K
     const wheelKey = compoundEntry.clay;
-    const wheelName = WHEEL_NAMES[wheelKey] ?? wheelKey;
+    const wheelName = VISUAL_COLOUR_NAMES[wheelKey] ?? WHEEL_NAMES[wheelKey] ?? wheelKey;
     const wheelRecipe = WHEEL_RECIPES[wheelKey];
     const subRecipeStr = wheelRecipe
       .map((e) => `${e.parts} ${PRIMARY_CLAY_NAMES[e.clay] ?? e.clay}`)

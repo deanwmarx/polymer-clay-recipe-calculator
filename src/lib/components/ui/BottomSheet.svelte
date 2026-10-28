@@ -95,10 +95,10 @@
   {#if open}
     <div class="flex max-h-[88dvh] flex-col overflow-hidden rounded-t-panel bg-surface-canvas text-ink shadow-panel"
       in:fly={{y:'100%',duration:motion.current ? 0 : 280,opacity:1,easing:cubicOut}} out:exitSheet onoutroend={finishClose}>
-      <div class="shrink-0 border-b border-line bg-surface px-4">
-        <Button variant="ghost" size="bare" display="block" aria-label="Close colour recipe" title="Drag down or tap to close"
+      <div class="shrink-0 border-b border-line bg-surface">
+        <Button variant="ghost" size="bare" fullWidth aria-label="Close colour recipe" title="Drag down or tap to close"
           onclick={handleClick} onpointerdown={startDrag} onpointermove={moveDrag} onpointerup={endDrag} onpointercancel={cancelDrag}
-          class="group mx-auto h-11 w-24 touch-none cursor-grab select-none active:cursor-grabbing">
+          class="group h-11 touch-none cursor-grab select-none active:cursor-grabbing">
           <span class="h-1.5 w-10 rounded-full bg-line-strong group-hover:bg-accent" aria-hidden="true"></span>
         </Button>
         <h2 id={`${id}-title`} class="sr-only">{title}</h2>
